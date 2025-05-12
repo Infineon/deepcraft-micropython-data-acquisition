@@ -1,5 +1,5 @@
 # Add user configuration details
 
-SSID 	 = 'ZTE-TGPSeA'
-PASSWORD = 'crtz4q6h'
+SSID 	 = 'your-ssid'
+PASSWORD = 'your-password'
 PORT     = 5000

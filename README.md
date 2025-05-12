@@ -1,6 +1,6 @@
 # DEEPCRAFT™ Micropython Data Acquisition
 
-This repository provides a framework to stream sensor data like audio from PDM microphones over WiFi using MicroPython.
+This repository provides a framework to stream sensor data like audio from PDM microphones over WiFi using MicroPython to DEEPCRAFT™ studio.
 
 ## Tested Boards:
 
@@ -9,39 +9,52 @@ This repository provides a framework to stream sensor data like audio from PDM m
 ## Pre-requisites
 1. PSoC6 based device flashed with MicroPython firmware. Check the [mpy-psoc6.py utility](https://ifx-micropython.readthedocs.io/en/latest/psoc6/installation.html) to do so.
 
-2. Clone the captureserver repo:
-    
-    git clone https://bitbucket.org/imagimob/captureserver/src/master/ 
-    
-and follow the instruction to setup.
+2. Clone and setup the captureserver repo by following instructions given [here](https://bitbucket.org/imagimob/captureserver/src/master/)
 
+3. Clone this repository:
+    ```bash
+    git clone https://github.com/Infineon/deepcraft-micropython-data-acquisition.git
+    ```
+4. [DEEPCRAFT™ Studio](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.deepcraftstudio) 
 
-## 2. Sensor data acquisition
-1. In TCP-mpy.py script add your Wifi name and password  to use your wifi to transfer the data:
+## Usage
+1. Open this cloned repo in micropython supported IDE's like thonny and update in config.py with your wifi credentials:
+    
     ```bash
     SSID = "your wifi name"
     PASSWORD = "your wifi password"
     ```
-2. In capture server cloned repo  move to generic folder using 
+2. Copy the complete sources to device by right clicking and selecting Upload to /
+
+    ![Alt text](docs/images/transfer_to_device.png)
+
+    Once done, you will see all the sources in your micropython edge device filesystem
+
+    ![Alt text](docs/images/lib_on_device.png)
+
+2. Open a cmd prompt from root of capture server cloned repo and navigate to examples/generic:
+    
     ```bash
     cd examples/generic
     ```
-3. Specific commands for each demo ,TCP :
+
+3. Run the below command after updating the values according to your setup:
+    
     ```bash
-    python generic_local_capture_interface.py --output-dir "mention the output dir" --protocol TCP --ip-address 192.168.0.108 --port 5000  --data-format .wav --data-type h --samples-per-packet 512 --features 1 --sample-rate 16000 --video-disabled.
+    python generic_local_capture_interface.py --output-dir "mention the output dir" --protocol TCP --ip-address "Board IP address" --port 5000  --data-format ".data or .wav" --data-type h --samples-per-packet 512 --features 1 --sample-rate 16000 --video-disabled.
     ```
-The data will be stored in the output directory mentioned .
+    For explanation on each parameters, please check the [capture-server documentation](https://bitbucket.org/imagimob/captureserver/src/master/).
 
-## 3. Importing to studio:
+    The recorded data will be stored in the output directory mentioned.
 
-1. Now open the Deepcraft Studio .Create a new project / open a project.And click the add data button inside the DATA tab  and choose the output directory in which you saved the files .
+4. Open Deepcraft Studio and either create a new project or open an existing one. Navigate to the DATA tab and click the Add Data button. Select the output directory where the captured .wav or .data and associated label files were saved.
 
-    ![Alt text](docs/demo_images/tcpaddata1.png)
+    ![Alt text](docs/images/training_add_data.png)
 
-2. you should see an audio and label file session automatically selected.
+5. Upon selection, the studio will automatically detect and load the audio/data and label files into a new data session.
 
-    ![Alt text](docs/demo_images/tcpaddata2.png)
+    ![Alt text](docs/images/training_data_view.png)
 
-3. After successful adding you can see the data session created inside the studio.Now you can get your data inside the studio and start training the model.
+6. Once the data session is created, your dataset is now available inside the studio and ready for preprocessing, labeling, and model training.
 
-    ![Alt text](docs/demo_images/tcpdata3.png)
+    ![Alt text](docs/images/training_data_session.png)
