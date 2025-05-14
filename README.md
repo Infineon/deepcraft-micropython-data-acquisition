@@ -58,3 +58,35 @@ This repository offers a comprehensive framework for streaming sensor data, such
 6. After creating the data session, your dataset will be accessible within DEEPCRAFT™ Studio, ready for preprocessing, labeling, and training machine learning models. 🚀
 
     ![Alt text](docs/images/training_data_session.png)
+
+## Add your own Sensor
+Want to stream data from a different sensor? The integration is straight forward — just implement a few standard methods in your sensor driver to work seamlessly with the capture script.
+
+### Sensor Driver Interface
+Every sensor must have its own sensor driver file (e.g. `pdm_pcm.py`) which must define the following methods: 
+
+| Method                 | Description                                                                 | Input Args                  | Return Type                 |
+|------------------------|-----------------------------------------------------------------------------|-----------------------------|-----------------------------|
+| `__init__()`           | Set the default parameters for the sensor.                                  | `self`                      | `None`                      |
+| `init()`               | Initialize the sensor hardware (e.g. I2C or SPI setup).                     | `self`                      | `None`                      |
+| `get_buffer()`         | Return the internal buffer used to store captured sensor samples.           | `self`                      | `List[int]` / `List[float]` |
+| `get_format()`         | Specify how data should be packed for the transmission.                     | `self`                      | `Tuple[str, str]`           |
+| `read_samples(buffer)` | Capture data into the provided buffer in-place.                             | `self`, `buffer: List`      | `None`                      |
+| `deinit()`             | Power down the sensor and release any used resources.                       | `self`                      | `None`                      |
+
+
+With the interface defined, just import your new sensor in the `data_acquisition.py` script and define your sensor config in the `main` block. 
+1. For PDM microphones, we configure it as:
+
+```python
+config = {
+    "clk_pin": "P10_4",
+    "data_pin": "P10_5",
+    "sample_rate": 16000,
+    "gain": 20,
+    "buffer_size": 512,
+    }
+```
+
+## Contributing Guide
+Please do not hesitate to share your sensor integration with the community! Open a [Pull Request](https://github.com/Infineon/deepcraft-micropython-data-acquisition/pulls) with your `sensors/sensor_name.py` and an example configuration in the `README.md`. 🙌
