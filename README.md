@@ -88,5 +88,22 @@ config = {
     }
 ```
 
+## FAQ's
+
+Q: I am encountering an error when trying to run the capture server, with messages such as __"Device not found or another error occurred: [WinError 10054] An existing connection was forcibly closed by the remote host."__
+
+A: This error typically occurs when the client and server are not properly synchronized, and the client is already sending data before the server is ready to receive it. The current implementation uses a time.sleep(0.1) delay to account for this synchronization, which should cover most cases. However, if the delay is too short or too long for your specific sensor implementation, you may need to adjust this value accordingly.
+
+Important Considerations:
+
+- When adjusting the delay value, keep in mind that print statements in the script can also introduce a small delay, which should be factored into your calculation.
+- Ensure that the delay value is set to a suitable duration to allow for proper synchronization between the client and server.
+
+
+Q: I am experiencing __duplicate timestamps__ when importing data to Studio.
+
+A: Duplicate timestamps may occur when importing data to Studio if the sensor is changed without adjusting the delay value accordingly. To resolve this issue, ensure that the delay value in `data_acquisition.py` script is adjusted in accordance with your implementation to synchronize the server and client. This adjustment will prevent duplicate timestamps and ensure accurate data importation.
+
+
 ## Contributing Guide
 Please do not hesitate to share your sensor integration with the community! Open a [Pull Request](https://github.com/Infineon/deepcraft-micropython-data-acquisition/pulls) with your `sensors/sensor_name.py` and an example configuration in the `README.md`. 🙌

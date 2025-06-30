@@ -4,6 +4,7 @@ import network_utils
 from network_utils import connect_wifi
 from tcp_server import create_server_socket
 from sensors.pdm_pcm import PDM_PCM  # swap this out for any other sensor
+import time
 
 def main(sensor):
     ip = connect_wifi()
@@ -23,6 +24,7 @@ def main(sensor):
             sensor.read_samples(rx_buf)
             packet = struct.pack(full_format, *rx_buf)
             conn.sendall(packet)
+            time.sleep(0.1)
     except OSError as e:
         print("Connection error:", e)
     finally:
