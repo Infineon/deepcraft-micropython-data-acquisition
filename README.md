@@ -88,7 +88,7 @@ config = {
     }
 ```
 
-## FAQ's
+## FAQs
 
 Q: I am encountering an error when trying to run the capture server, with messages such as __"Device not found or another error occurred: [WinError 10054] An existing connection was forcibly closed by the remote host."__
 

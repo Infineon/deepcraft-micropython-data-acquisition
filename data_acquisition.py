@@ -6,6 +6,8 @@ from tcp_server import create_server_socket
 from sensors.pdm_pcm import PDM_PCM  # swap this out for any other sensor
 import time
 
+SYNC_DELAY = 0.1
+
 def main(sensor):
     ip = connect_wifi()
     server_socket = create_server_socket(ip)
@@ -24,7 +26,7 @@ def main(sensor):
             sensor.read_samples(rx_buf)
             packet = struct.pack(full_format, *rx_buf)
             conn.sendall(packet)
-            time.sleep(0.1)
+            time.sleep(SYNC_DELAY)
     except OSError as e:
         print("Connection error:", e)
     finally:
