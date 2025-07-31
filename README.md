@@ -87,6 +87,20 @@ config = {
     "buffer_size": 512,
     }
 ```
+2. For BMI270 sensor with interrupt, we configure it as:
+
+```python
+int_pin = Pin("P1_5", mode=Pin.IN, pull = Pin.PULL_DOWN)
+int_pin.irq(handler=cback, trigger=Pin.IRQ_FALLING)
+
+config = {
+    "bus": i2c,
+    "accel_range": b.ACCEL_RANGE_2G,
+    "gyro_range": b.GYRO_RANGE_250,
+    "interrupt_config": int_pin
+    }
+```
+If interrupt functionality is not desired, pass None.
 
 ## FAQs
 
@@ -103,7 +117,6 @@ Important Considerations:
 Q: I am experiencing __duplicate timestamps__ when importing data to Studio.
 
 A: Duplicate timestamps may occur when importing data to Studio if the sensor is changed without adjusting the delay value accordingly. To resolve this issue, ensure that the delay value in `data_acquisition.py` script is adjusted in accordance with your implementation to synchronize the server and client. This adjustment will prevent duplicate timestamps and ensure accurate data importation.
-
 
 ## Contributing Guide
 Please do not hesitate to share your sensor integration with the community! Open a [Pull Request](https://github.com/Infineon/deepcraft-micropython-data-acquisition/pulls) with your `sensors/sensor_name.py` and an example configuration in the `README.md`. 🙌
