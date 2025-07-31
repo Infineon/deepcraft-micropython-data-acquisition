@@ -36,7 +36,7 @@ gyro_range_values = (
     GYRO_RANGE_125,
 )
 
-#BMI270 Reg Stack
+# BMI270 Reg Stack
 _BMI270_REG_CHIP_ID           =   const(0x00)
 _BMI270_REG_ERR_REG           =   const(0x02)
 _BMI270_REG_STATUS            =   const(0x03)
@@ -87,7 +87,7 @@ class BMI270(SensorInterface):
         super().__init__(config)
 
         if config is None or "bus" not in config:
-            raise ValueError("An I2C bus should be intialized by user")
+            raise ValueError("An I2C bus should be initialized by user")
 
         self._bus = config["bus"]
         self._address = config.get("address", 0x68)
@@ -125,13 +125,13 @@ class BMI270(SensorInterface):
         """Set the range for acceleration. Possible values are : 2, 4, 8, 16.
         """
         self.accel_scale = 32768/accel_scale
-        self.reg._write_reg(_BMI270_REG_ACC_RANGE,ACCEL_SCALE.index(accel_scale))
+        self.reg._write_reg(_BMI270_REG_ACC_RANGE, ACCEL_SCALE.index(accel_scale))
         
     def set_gyro_range(self, gyro_scale):
         """Set the range for gyro. Possible values are: 2000, 1000, 500, 250, 125.
         """
         self.gyro_scale = 32768/gyro_scale
-        self.reg._write_reg(_BMI270_REG_GYRO_RANGE,GYRO_SCALE.index(gyro_scale))
+        self.reg._write_reg(_BMI270_REG_GYRO_RANGE, GYRO_SCALE.index(gyro_scale))
             
     def load_config_file(self) -> None:
         """Load the configuration file mandatory for BMI270 sensor to initialize.
@@ -192,10 +192,10 @@ class BMI270(SensorInterface):
     def configure_data_ready_interrupt(self):
         """Configure data ready interrupt for INT1 channel.
         """
-        if self._int_config != None:
-            self.reg._write_reg(_BMI270_REG_INT_MAP_DATA ,0x04)
-            self.reg._write_reg(_BMI270_REG_INT1_IO_CTRL ,0x08)
-            self.reg._write_reg(_BMI270_REG_INT_LATCH ,0x00)
+        if self._int_config is not None:
+            self.reg._write_reg(_BMI270_REG_INT_MAP_DATA, 0x04)
+            self.reg._write_reg(_BMI270_REG_INT1_IO_CTRL, 0x08)
+            self.reg._write_reg(_BMI270_REG_INT_LATCH, 0x00)
         else:
             raise ValueError("Interrupt on pin must be configured")
         
