@@ -1,5 +1,3 @@
-import struct
-
 class Register:
     
     def __init__(
