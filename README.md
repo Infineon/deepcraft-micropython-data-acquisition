@@ -88,5 +88,20 @@ config = {
     }
 ```
 
+2. For BMI270 sensor with interrupt, we configure it as:
+
+```python
+int_pin = Pin("P1_5", mode=Pin.IN, pull = Pin.PULL_DOWN)
+int_pin.irq(handler=cback, trigger=Pin.IRQ_FALLING)
+
+config = {
+    "bus": i2c,
+    "accel_range": b.ACCEL_RANGE_2G,
+    "gyro_range": b.GYRO_RANGE_250,
+    "interrupt_config": int_pin
+    }
+```
+If interrupt functionality is not desired, pass None.
+
 ## Contributing Guide
 Please do not hesitate to share your sensor integration with the community! Open a [Pull Request](https://github.com/Infineon/deepcraft-micropython-data-acquisition/pulls) with your `sensors/sensor_name.py` and an example configuration in the `README.md`. 🙌
